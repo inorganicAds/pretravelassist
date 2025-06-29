@@ -246,5 +246,74 @@
             };
         });
     </script>
+<div id="cookie-banner" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[999] bg-gradient-to-r from-blue-700 to-blue-900 text-white py-4 px-6 md:py-5 md:px-8 shadow-2xl rounded-xl max-w-sm md:max-w-2xl lg:max-w-3xl border-2 border-white transform translate-y-full transition-transform duration-500 ease-out">
+    <div class="container mx-auto flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-6">
+        <div class="flex items-center text-center md:text-left">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cookie text-blue-300 mr-3 flex-shrink-0">
+                <path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"></path>
+                <path d="M11 6a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"></path>
+                <path d="M7 11a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"></path>
+                <path d="M16 11a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"></path>
+                <path d="M12 17a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"></path>
+                <path d="M7 7a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"></path>
+                <path d="M16 16a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"></path>
+            </svg>
+            <p class="text-sm md:text-base leading-relaxed">
+                We use cookies to ensure you get the best experience on our website. By continuing to use this site, you agree to our <a href="#" class="text-blue-300 hover:underline font-semibold">Privacy Policy</a>.
+            </p>
+        </div>
+        <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
+            <button id="accept-cookies-button" class="bg-white hover:bg-gray-100 text-blue-700 font-bold py-3 px-8 rounded-xl shadow-lg transition duration-300 transform hover:scale-105 uppercase tracking-wide whitespace-nowrap">
+                Accept Cookies
+            </button>
+            <button id="decline-cookies-button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-xl shadow-lg transition duration-300 transform hover:scale-105 uppercase tracking-wide whitespace-nowrap">
+                Decline
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cookieBanner = document.getElementById('cookie-banner');
+        const acceptButton = document.getElementById('accept-cookies-button');
+        const declineButton = document.getElementById('decline-cookies-button');
+        const localStorageKey = 'cookieConsentAccepted';
+
+        // Check if cookie consent has been given
+        const consentGiven = localStorage.getItem(localStorageKey);
+
+        if (!consentGiven) {
+            // Show the banner after a short delay for animation
+            setTimeout(() => {
+                cookieBanner.style.transform = 'translateY(0)';
+            }, 500); // Gives time for the page to load before animation
+        } else {
+            // If consent given, remove banner from DOM entirely
+            cookieBanner.remove();
+        }
+
+        // Event listener for "Accept Cookies" button
+        acceptButton.addEventListener('click', () => {
+            localStorage.setItem(localStorageKey, 'true'); // Store consent
+            cookieBanner.style.transform = 'translateY(100%)'; // Animate out
+            cookieBanner.addEventListener('transitionend', () => {
+                cookieBanner.remove(); // Remove from DOM after animation
+            }, { once: true });
+        });
+
+        // Event listener for "Decline" button (optional, can just hide for this example)
+        declineButton.addEventListener('click', () => {
+            // For simplicity, we'll just hide it. In a real app, you might
+            // set a different localStorage value or redirect if strictly declining.
+            cookieBanner.style.transform = 'translateY(100%)'; // Animate out
+            cookieBanner.addEventListener('transitionend', () => {
+                cookieBanner.remove(); // Remove from DOM after animation
+            }, { once: true });
+            // You might also prevent certain scripts from loading here.
+        });
+    });
+</script>
+
 </body>
 </html>
